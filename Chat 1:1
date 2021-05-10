@@ -1,0 +1,41 @@
+package abc;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class DemoClient {
+	public static void main(String[] args) {
+		System.out.println("<<Client>>");
+		
+		
+		try {
+			Socket socket = new Socket(InetAddress.getByName("localhost"), 8005);
+			System.out.println("Server에 접속 완료");
+			System.out.println("접속 Server 주소 : "+socket.getInetAddress()+":"+socket.getPort());	
+			
+			DataInputStream dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+			DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+			DataInputStream kb_input = new DataInputStream(new BufferedInputStream(System.in));
+		
+			System.out.println("서버로부터 보낼 메세지 입력:");
+			String data = kb_input.readUTF(); // 키보드로 입력
+			
+			
+			String Server_return = dis.readUTF(); // 서버로부터 되돌아오는 데이터를 읽어옴
+			System.out.println("서버로부터 되돌아온 메세지:"+ Server_return);
+		} 
+		catch (UnknownHostException e) {
+			
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
